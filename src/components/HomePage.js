@@ -7,6 +7,7 @@ class HomePage extends Component {
     state = {
         itemCurrentlyOnSale: 'A Hammer',
         editSaleItem: false,
+        displayAdminView: true,
         productList: [
             {
                 productName: 'Hammer',
@@ -64,11 +65,36 @@ class HomePage extends Component {
         this.setState({cartStuff: filteredNewCartStuff})
     }
 
+    toggleDisplayAdminView = () => {
+        this.setState({displayAdminView: !this.state.displayAdminView})
+    }
+
+    handleAdminOrShopView = (event) => {
+        const currentView = event.target.value
+        this.setState({currentView})
+    }
+
 
     render() {
         return (
             <div>
                 <h1>My Hardware Store</h1>
+                <button onClick={this.toggleDisplayAdminView}>{this.state.displayAdminView ? 'Shop View' : 'Admin View'}</button>
+                <div>
+                    {
+                        this.state.displayAdminView 
+                            ?   <AdminView 
+                                    productList={this.state.productList} 
+                                    addNewProductToProductList={this.addNewProductToProductList}
+                                    removeProductFromProductList={this.removeProductFromProductList}
+                                />
+                            :   <ShopView 
+                                    productList={this.state.productList} 
+                                    addToCart={this.addToCart}
+                                />
+                    }
+                </div>
+
                 <div>Currently On Sale: { this.state.itemCurrentlyOnSale }!</div>
                 <button onClick={this.toggleEditSaleItem}>{this.state.editSaleItem ? 'Hide' : 'Edit Sale Item'}</button>
                 <div>
@@ -78,7 +104,7 @@ class HomePage extends Component {
                             : null 
                     }
                 </div>
-                <AdminView 
+                {/* <AdminView 
                     productList={this.state.productList} 
                     addNewProductToProductList={this.addNewProductToProductList}
                     removeProductFromProductList={this.removeProductFromProductList}
@@ -86,7 +112,7 @@ class HomePage extends Component {
                 <ShopView 
                     productList={this.state.productList} 
                     addToCart={this.addToCart}
-                />
+                /> */}
                 <CartView
                     cartStuff={this.state.cartStuff}
                     removeFromCart={this.removeFromCart}
